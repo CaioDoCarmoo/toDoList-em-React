@@ -87,7 +87,7 @@ export const ContainerList = styled.div`
     gap: 20px;
     padding: 30px;        
     background-color: white;
-    max-height: 300px;
+    max-height: 450px;
     overflow-y: auto;
 
     ul {
@@ -170,6 +170,10 @@ export const ContainerList = styled.div`
 
 `
 
+export const ContainerPurchase = styled.div`
+
+`
+
 export const TrashPurchasedItem = styled(Trash)`
 
     color: red;
@@ -190,7 +194,7 @@ export const CountPurchasedItems = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 20px 0px 20px;
+    padding: 10px 10px;
     background-color: white;
 
     .productsPurchased {
