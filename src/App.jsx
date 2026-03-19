@@ -8,8 +8,10 @@ function App() {
   //Código JavaScript
 
   const [listProducts, setListProducts] = useState([]);
+  const [listProductsPurchased, setListProductsPurchased] = useState([])
   const [nameProducts, setNameProducts] = useState("")
   const [quantityProducts, setQuantityProducts] = useState("")
+
 
   const isDisable = !nameProducts.trim() || !quantityProducts.trim()
 
@@ -34,10 +36,29 @@ function App() {
 
     setListProducts(newListProducts)
   }
+ 
 
-  function clickCheck(event) {
-    console.log(event.target.checked)
-  }
+  function clickCheck(id) {
+  // pega o item que foi clicado
+  const productSelected = listProducts.find(product => product.id === id)
+
+  // remove da lista de pendentes
+  const newListProducts = listProducts.filter(product => product.id !== id)
+
+  // adiciona na lista de comprados
+  setListProducts(newListProducts)
+  setListProductsPurchased([...listProductsPurchased, productSelected])
+}
+
+function uncheckProduct(id) {
+  const productSelected = listProductsPurchased.find(product => product.id === id)
+
+  const newPurchased = listProductsPurchased.filter(product => product.id !== id)
+
+  setListProductsPurchased(newPurchased)
+  setListProducts([...listProducts, productSelected])
+}
+
 
   // Retorna código HTML
   return (
@@ -57,7 +78,7 @@ function App() {
               listProducts.map(products => (
                 <li key={products.id}>
                   <label htmlFor={products.name}>
-                    <input onChange={clickCheck} type="checkbox" id={products.name} />
+                    <input onChange={() => clickCheck(products.id)} type="checkbox" id={products.name} />
                     <span className="text">{products.name}</span><span className="qtd">{products.quantity}</span>
                     <Trash onClick={() => trashProducts(products.id)}></Trash>
                   </label>
@@ -74,10 +95,17 @@ function App() {
           <p className="clearPurchased"><TrashPurchasedItem /> Limpar comprados</p>
         </CountPurchasedItems>
         <ContainerPurchase>
-          <label htmlFor="Product2">
-            <input type="checkbox" id="Product2" />
-            <del><span className="text">Feijão</span><span className="qtd">(1 Pacote)</span></del>
-          </label>
+          <ul>
+            {
+              listProductsPurchased.map ( purchased => (
+                <label htmlFor={purchased.name}>
+                  <input onChange={() => uncheckProduct(purchased.id)} type="checkbox" id={purchased.name} checked/>
+                  <del><span className="text">{purchased.name}</span><span className="qtd">{purchased.quantity}</span></del>
+                  <Trash onClick={() => trashProducts(purchased.id)}></Trash>
+                </label>
+              ))
+            }
+          </ul>
         </ContainerPurchase>
       </ContainerList>
 
